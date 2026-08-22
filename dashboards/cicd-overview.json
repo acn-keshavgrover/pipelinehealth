@@ -1,0 +1,119 @@
+{
+  "dashboard": {
+    "title": "PipelineHealth — CI/CD Overview",
+    "uid": "pipelinehealth-main",
+    "tags": ["cicd", "devops", "pipelinehealth"],
+    "timezone": "browser",
+    "refresh": "30s",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Build Success Rate",
+        "type": "gauge",
+        "gridPos": { "h": 8, "w": 6, "x": 0, "y": 0 },
+        "targets": [
+          {
+            "expr": "pipelinehealth_build_success_rate",
+            "legendFormat": "{{source}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "min": 0, "max": 100,
+            "thresholds": {
+              "steps": [
+                { "value": 0, "color": "red" },
+                { "value": 80, "color": "yellow" },
+                { "value": 95, "color": "green" }
+              ]
+            },
+            "unit": "percent"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "title": "Total Builds",
+        "type": "stat",
+        "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+        "targets": [
+          {
+            "expr": "pipelinehealth_builds_total",
+            "legendFormat": "{{source}}"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Failed Builds",
+        "type": "stat",
+        "gridPos": { "h": 4, "w": 6, "x": 6, "y": 4 },
+        "targets": [
+          {
+            "expr": "pipelinehealth_build_failures_total",
+            "legendFormat": "{{source}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": { "mode": "fixed", "fixedColor": "red" }
+          }
+        }
+      },
+      {
+        "id": 4,
+        "title": "Avg Build Duration",
+        "type": "stat",
+        "gridPos": { "h": 8, "w": 6, "x": 12, "y": 0 },
+        "targets": [
+          {
+            "expr": "pipelinehealth_build_duration_avg_seconds",
+            "legendFormat": "{{source}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": { "unit": "s" }
+        }
+      },
+      {
+        "id": 5,
+        "title": "Build Duration Distribution",
+        "type": "histogram",
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+        "targets": [
+          {
+            "expr": "rate(pipelinehealth_build_duration_seconds_bucket[5m])",
+            "legendFormat": "{{le}}"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Failures by Cause",
+        "type": "piechart",
+        "gridPos": { "h": 8, "w": 6, "x": 12, "y": 8 },
+        "targets": [
+          {
+            "expr": "sum by(cause) (pipelinehealth_failures_by_cause_total)",
+            "legendFormat": "{{cause}}"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Build Success Rate Over Time",
+        "type": "timeseries",
+        "gridPos": { "h": 8, "w": 18, "x": 0, "y": 16 },
+        "targets": [
+          {
+            "expr": "pipelinehealth_build_success_rate",
+            "legendFormat": "{{source}} success rate"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": { "unit": "percent", "min": 0, "max": 100 }
+        }
+      }
+    ]
+  }
+}
